@@ -1,0 +1,23 @@
+services:
+  nginx-proxy:
+    container_name: nginx-proxy
+    image: nginx-proxy
+    #image: ghcr.io/devops-from-root/nginx-proxy
+    build:
+      #context: https://github.com/devops-from-root/nginx-proxy.git
+      #context: ${PWD}/.
+      dockerfile: Dockerfile
+      args:
+        - BUILD_OPTIONS=--no-cache
+    ports:
+      - "${HTTPS_PORT:-443}:443"
+    environment:
+      - HTTPS_PORT=${HTTPS_PORT:-443}
+      - BACK_URI=${BACK_URI:-localhost}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "nc", "-zv", "localhost", "${HTTPS_PORT:-443}"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
