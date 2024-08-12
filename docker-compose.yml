@@ -1,15 +1,16 @@
 services:
   nginx-proxy:
     container_name: nginx-proxy
-    image: nginx-proxy
-    #image: ghcr.io/devops-from-root/nginx-proxy
-    build:
-      context: https://github.com/devops-from-root/nginx-proxy.git
-      dockerfile: Dockerfile
-      args:
-        - BUILD_OPTIONS=--no-cache
+    image: ghcr.io/devops-from-root/nginx-proxy
+    #image: nginx-proxy
+    #build:
+      #context: https://github.com/devops-from-root/nginx-proxy.git
+      #context: .
+      #dockerfile: Dockerfile
+      #args:
+        #- BUILD_OPTIONS=--no-cache
     ports:
-      - "8443:443"
+      - "443:443"
     environment:
       - BACK_URI=${BACK_URI:-localhost}
     restart: unless-stopped

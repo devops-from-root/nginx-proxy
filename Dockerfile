@@ -34,4 +34,4 @@ RUN echo 'server {\n\
 }' > /etc/nginx/nginx.template
 
 # Запуск Nginx с заменой переменных окружения
-CMD ["sh", "-c", "envsubst '\$BACK_URI' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "envsubst '$BACK_URI' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"]
