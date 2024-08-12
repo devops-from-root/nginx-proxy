@@ -29,7 +29,7 @@ RUN echo 'server {\n\
     ssl_certificate_key /etc/nginx/ssl/nginx.key;\n\
 \n\
     location / {\n\
-        proxy_pass http://${BACK_URI}:${HTTPS_PORT};\n\
+        proxy_pass http://${BACK_URI};\n\
         proxy_set_header Host $host;\n\
         proxy_set_header X-Real-IP $remote_addr;\n\
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n\
