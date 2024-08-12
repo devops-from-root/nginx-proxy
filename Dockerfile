@@ -1,12 +1,8 @@
 FROM ghcr.io/devops-from-root/alpine:main
 
-# Устанавливаем значения по умолчанию для переменных
-ARG HTTPS_PORT=443
+# Устанавливаем значения переменных
 ARG BACK_URI=localhost
-
-ENV HTTPS_PORT=${HTTPS_PORT}
 ENV BACK_URI=${BACK_URI}
-
 
 # Устанавливаем необходимые пакеты
 RUN apk add --no-cache openssl gettext netcat-openbsd
@@ -22,7 +18,7 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 
 # Создаем конфигурацию nginx.template через echo
 RUN echo 'server {\n\
-    listen ${HTTPS_PORT} ssl;\n\
+    listen 443 ssl;\n\
     server_name _default;\n\
 \n\
     ssl_certificate /etc/nginx/ssl/nginx.crt;\n\
@@ -38,5 +34,4 @@ RUN echo 'server {\n\
 }' > /etc/nginx/nginx.template
 
 # Запуск Nginx с заменой переменных окружения
-CMD ["sh", "-c", "envsubst '\$BACK_URI \$HTTPS_PORT' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"]
-
+CMD ["sh", "-c", "envsubst '\$BACK_URI' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"]
