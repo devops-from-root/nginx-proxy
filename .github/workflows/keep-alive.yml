@@ -1,0 +1,21 @@
+name: Keep Alive
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # 1-го числа каждого месяца
+  workflow_dispatch:
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Keep alive commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          echo "Last update: $(date)" > .github/.keep-alive
+          git add .github/.keep-alive
+          git commit -m "chore: keep-alive commit"
+          git push
